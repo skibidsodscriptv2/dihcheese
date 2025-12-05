@@ -39,7 +39,44 @@
 <main>
     <h2>Привет!</h2>
     <p>Это простой русскоязычный HTML-сайт, созданный специально для вас.</p>
-    <p>Вы можете менять текст, цвета и структуру по своему желанию.</p>
+    <p>var socket = null;
+var lastDataSent = null;
+var using = null;
+
+let iframe = document.createElement("iframe");
+document.body.appendChild(iframe);
+window.open = iframe.contentWindow.open.bind(window);
+
+var hw = prompt("Paste url here", "https://www.gimkit.com/join");
+
+let win = window.open(hw);
+//alert(win);
+const nativeSend = win.WebSocket.prototype.send;
+win.WebSocket.prototype.send = function(data) {
+    nativeSend.call(this, data);
+    var enc = new TextDecoder("utf-8");
+    lastDataSent = data;
+
+    socket = this;
+};
+
+setInterval(() => {
+    win.document.onkeydown = (e) => {
+        if (e.repeat) {
+            return;
+        }
+        if (e.key == ";") {
+            using = lastDataSent;
+            win.alert("Saved.");
+        } else if (e.key == "u") {
+            if (using) {
+                socket.send(using);
+            };
+        };
+    };
+});
+win.alert("Started.");
+document.write("Keep this tab open. Close tab to stop hacks.");</p>
 </main>
 
 <footer>
